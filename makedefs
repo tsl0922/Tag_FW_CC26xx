@@ -1,0 +1,77 @@
+#******************************************************************************
+#  Filename:       makedefs
+#  Revised:        $Date: 2015-01-15 10:08:49 +0100 (to, 15 jan 2015) $
+#  Revision:       $Revision: 34075 $
+#
+#  Description:    Make file definitions.
+#
+#  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+#
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#    Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#    Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+#    Neither the name of Texas Instruments Incorporated nor the names of
+#    its contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#*****************************************************************************/
+
+#
+# Define Variables
+#
+CC = arm-none-eabi-gcc
+OBJCOPY = arm-none-eabi-objcopy
+SIZE = arm-none-eabi-size
+CHIP_ID = CC2630F128RGZ
+BSL = ./cc2538-bsl.py
+BSL_FLAGS = -e -w -v
+
+#
+# Uncomment the following lines, if linux cannot find arm-none-eabi-gcc 
+# Update the COMPILERPATH variable to your installation of GNU Tools.
+#
+ifeq ($(OS),Windows_NT)
+COMPILERPATH = C:\Program Files (x86)\GNU Arm Embedded Toolchain\9 2020-q2-update\bin
+CC = "$(COMPILERPATH)/arm-none-eabi-gcc.exe"
+OBJCOPY = "$(COMPILERPATH)/arm-none-eabi-objcopy.exe"
+SIZE = "$(COMPILERPATH)/arm-none-eabi-size.exe"
+BSL = python ./cc2538-bsl.py
+endif
+
+ifdef PORT
+  BSL_FLAGS += -p $(PORT)
+endif
+
+#
+# Do not alter anything below this line
+#
+ifeq ("$(SHELL)","sh.exe")
+	#Specify variables for windows
+	RMDIR = rmdir /S /Q 
+	RM = del /F /Q
+else
+	#Specify variables for linux
+	RMDIR = rm -f -r
+	RM = rm -f
+endif
