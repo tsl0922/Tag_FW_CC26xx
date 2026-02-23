@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install ARM GCC
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        id: arm-none-eabi-gcc-action
+        with:
+          release: '9-2020-q2'
+      - name: Build
+        run: make
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tag_FW_CC26xx
+          path: build/Tag_FW_CC26xx.bin
