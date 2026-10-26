@@ -506,7 +506,9 @@ static bool getDataBlock(uint8_t* blockBuffer, const uint16_t blockSize) {
     }
     if (ack->pleaseWaitMs) {  // SLEEP - until the AP is ready with the data
       printf("Please wait %d ms\r\n", ack->pleaseWaitMs);
-      delay(ack->pleaseWaitMs - 20);
+      if (ack->pleaseWaitMs > 20U) {
+        delay((uint32_t)ack->pleaseWaitMs - 20U);
+      }
     }
 
     blockRxLoop(blockBuffer, 295);

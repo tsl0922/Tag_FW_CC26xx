@@ -18,6 +18,8 @@ jobs:
           release: '9-2020-q2'
       - name: Build
         run: make
+      - name: Check block-wait arithmetic
+        run: python3 tests/test_block_wait.py
       - uses: actions/upload-artifact@v4
         with:
           name: Tag_FW_CC26xx
